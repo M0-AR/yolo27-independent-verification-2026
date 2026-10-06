@@ -11,9 +11,14 @@
 [![Docker Ready](https://img.shields.io/badge/Docker-ready-blue.svg)](docker-compose.yml)
 [![Reproducible](https://img.shields.io/badge/reproducible-seed%200-brightgreen.svg)](configs/repro.yaml)
 [![Live Results](https://img.shields.io/badge/live%20results-included-orange.svg)](docs/RESULTS_LIVE.md)
-[![Web Preview](https://img.shields.io/badge/web%20preview-preview.html-purple.svg)](preview.html)
+[![Web Preview](https://img.shields.io/badge/web%20preview-live-purple.svg)](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html)
 
-[🌐 Live Web Version (GitHub Pages)](preview.html) · [🚀 Quick Start](#-quick-start---30-seconds) · [🌱 Beginner Guide](#-beginner-guide--read-this-and-you-are-a-professional) · [🎓 Interactive Quiz](preview.html#quiz) · [📊 Results](#6-live-measured-results-verified-today) · [🤝 Contributing](#-contributing)
+[🌐 Live Web Version](https://M0-AR.github.io/yolo27-independent-verification-2026/) · [🌐 Preview](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html) · [🌐 Docs Mirror](https://M0-AR.github.io/yolo27-independent-verification-2026/docs/preview.html) · [🚀 Quick Start](#-quick-start---30-seconds) · [🌱 Beginner Guide](#-beginner-guide--read-this-and-you-are-a-professional) · [🎓 Interactive Quiz](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html#quiz) · [📊 Results](#6-live-measured-results-verified-today) · [🤝 Contributing](#-contributing)
+
+> **🌐 Render correctly in your browser:** pick any entry — all three resolve to the same lab (mirrors included so both Pages settings work):
+> `/` → https://M0-AR.github.io/yolo27-independent-verification-2026/ ·
+> `/preview.html` → https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html ·
+> `/docs/preview.html` → https://M0-AR.github.io/yolo27-independent-verification-2026/docs/preview.html
 
 </div>
 
@@ -27,7 +32,7 @@
 >
 > **Why should you care?** If you are a student, you learn computer vision from zero to publishable method. If you are an engineer, you get a one-command Docker rig that tells you the true speed and accuracy on *your* hardware before you ship to a factory, store, drone, or hospital. If you are a researcher, you get five pre-registered, falsifiable hypotheses (including a hidden medium-object trade-off nobody can see in single-number tables) ready for your next paper.
 >
-> **How do you start?** `docker compose up verifier-cpu` — two minutes later you hold real JSON artifacts in `results/`. Open `preview.html` for the beautiful web version with an interactive quiz that takes you from scratch to pro.
+> **How do you start?** `docker compose up verifier-cpu` — two minutes later you hold real JSON artifacts in `results/`. Open the [live web lab](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html) (or local [`preview.html`](preview.html) / [`docs/preview.html`](docs/preview.html)) for the beautiful version with an interactive quiz that takes you from scratch to pro.
 
 ---
 
@@ -57,11 +62,19 @@
 
 ### 1. Web preview (no install)
 
-Open [**`preview.html`**](preview.html) — the full visual companion to this README: results cards, architecture diagrams, latency chart from our real run, and an **interactive quiz** that grades you instantly.
+Open the lab — all three URLs render the same content (mirrors so both Pages source settings work):
+
+- `/` → [**Live home**](https://M0-AR.github.io/yolo27-independent-verification-2026/) (redirects to the lab)
+- `/preview.html` → [**Live preview**](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html)
+- `/docs/preview.html` → [**Live docs mirror**](https://M0-AR.github.io/yolo27-independent-verification-2026/docs/preview.html)
+
+Local files (same content): [`preview.html`](preview.html) · [`docs/preview.html`](docs/preview.html) — results cards, architecture diagrams, latency chart from our real run, and an **interactive quiz** ([try it live](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html#quiz)) that grades you instantly.
 
 After you enable GitHub Pages (2 minutes, see [Pages section](#-web-preview--github-pages-deploy-in-2-minutes)), it becomes:
 
-`https://YOUR-USERNAME.github.io/YOUR-REPO/preview.html`
+`https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html`
+
+Mirrors: `/` → https://M0-AR.github.io/yolo27-independent-verification-2026/ · `/docs/preview.html` → https://M0-AR.github.io/yolo27-independent-verification-2026/docs/preview.html
 
 ### 2. Screenshots (real artifacts from this repo)
 
@@ -173,7 +186,7 @@ python -m src.hidden_patterns # five testable ideas for your paper
 
 You now know more than most interview candidates: mAP vs mAP50, p50 vs p95, NMS-free, export gap, and why single tables lie.
 
-**Finish the quiz in [`preview.html#quiz`](preview.html#quiz) to lock it in — 10 questions, instant grading, from scratch to pro.**
+**Finish the quiz in the [live lab](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html#quiz) (local: [`preview.html#quiz`](preview.html#quiz)) to lock it in — 10 questions, instant grading, from scratch to pro.**
 
 ---
 
@@ -186,8 +199,8 @@ You now know more than most interview candidates: mAP vs mAP50, p50 vs p95, NMS-
 | 🔬 5 pre-registered hypotheses | Metric + threshold + flip rule for each; publishable whether confirmed or refuted | `src/hidden_patterns.py` |
 | 🌍 Real-world protocol | COCO + webcam/phone/warehouse + 2-domain shift test (UL37 thesis) | `docs/METHOD.md` |
 | 🐳 One-command Docker | `verifier-cpu` (default), `verifier-full`, `verifier-gpu` profiles | `Dockerfile`, `docker-compose.yml` |
-| 🌐 Beautiful web preview | Dashboard + diagrams + live chart + interactive quiz, Pages-ready | `preview.html` |
-| 🎓 Beginner-to-pro path | Plain-language guide + quiz + interview-ready concepts | README §Beginner + `preview.html#quiz` |
+| 🌐 Beautiful web preview | Dashboard + diagrams + live chart + interactive quiz, Pages-ready | [`preview.html`](preview.html) / [live](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html) |
+| 🎓 Beginner-to-pro path | Plain-language guide + quiz + interview-ready concepts | README §Beginner + [live quiz](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html#quiz) |
 | 📦 Pinned + logged env | Seed 0, imgsz 640, package + hardware manifest per run | `configs/repro.yaml`, `results/*.json` |
 | 🛡️ YOLO-27 blocker | Attempting YOLO-27 today writes UNAVAILABLE proof, never fake numbers | `results/yolo27_blocked.json` |
 
@@ -336,7 +349,13 @@ YOLO lineage (NMS-free dual assignment → end-to-end → hybrid) parallels quer
 ## 🗺️ Repository Map
 
 ```
-├── preview.html            # 🌐 beautiful web companion + quiz (GitHub Pages ready)
+├── index.html              # 🌐 root redirect → preview.html (so `/` renders)
+├── preview.html            # 🌐 web companion + quiz (root mirror)
+├── docs/
+│   ├── index.html          # 🌐 docs redirect → docs/preview.html (so `/` renders under /docs source)
+│   ├── preview.html        # 🌐 canonical page for /docs source (../assets paths)
+│   └── .nojekyll
+├── .nojekyll               # root static passthrough
 ├── assets/screenshots/     # hero, latency chart, video thumbnail, demo.gif (when you record it)
 ├── Dockerfile / docker-compose.yml  # cpu (default), full, gpu profiles
 ├── configs/repro.yaml + coco_val2017.yaml
@@ -355,17 +374,34 @@ YOLO lineage (NMS-free dual assignment → end-to-end → hybrid) parallels quer
 
 ## 🌐 Web Preview + GitHub Pages Deploy (2 minutes)
 
-`preview.html` is a self-contained page (no build step, no secrets). It mirrors this README visually and adds the **interactive quiz** with instant grading and a learning track from scratch to pro.
+`preview.html` is self-contained (no build step, no secrets). It mirrors this README visually and adds the **interactive quiz** ([live quiz](https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html#quiz)) with instant grading and a learning track from scratch to pro.
 
-**Enable the live site:**
+| URL | What renders | When it works |
+|---|---|---|
+| `/` → https://M0-AR.github.io/yolo27-independent-verification-2026/ | `index.html` redirect → lab | Source `/` **or** `/docs` (both have `index.html`) |
+| `/preview.html` → https://M0-AR.github.io/yolo27-independent-verification-2026/preview.html | Root lab page | Source `/` |
+| `/docs/preview.html` → https://M0-AR.github.io/yolo27-independent-verification-2026/docs/preview.html | Docs-mirror lab page | Source `/` (mirrors repo path) **and** source `/docs` (serves as `/preview.html`) |
 
-1. Push this repo to GitHub.
+**Why three URLs?** Pages mirrors repo paths under the chosen source: source `/` serves repo `docs/x.html` at `/docs/x.html`; source `/docs` serves it at `/x.html`. The mirrors above mean every entry renders under either setting — a green deployment never again hides a 404.
+
+**Enable / verify the live site:**
+
+1. Push this repo to GitHub (already at `M0-AR/yolo27-independent-verification-2026`).
 2. Open **Settings → Pages** (left sidebar, under *Code and automation*).
-3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-4. Branch: **main** (or `master`), folder: **/ (root)** → **Save**.
-5. Wait ~1 minute → open `https://YOUR-USERNAME.github.io/YOUR-REPO/preview.html`.
+3. Under **Build and deployment → Source**, choose **Deploy from a branch**. Recommended: Branch **main**, folder **/docs**. Root mirrors keep **/** working too.
+4. Wait 1–2 min, check the Actions “pages build and deployment” run, then probe:
 
-Add a `.nojekyll` file in the root (already included) so Pages serves `preview.html` and `assets/` exactly as committed. Link the live URL at the top of this README once deployed.
+```bash
+BASE="https://M0-AR.github.io/yolo27-independent-verification-2026"
+for p in "" "preview.html" "docs/preview.html"; do
+  printf "%s -> " "/$p"
+  curl -s -o /dev/null -w "%{http_code}\n" "$BASE/$p"
+done
+# Expect: 200 / 200 / 200 (mirrors). If you serve a single source intentionally,
+# expect 200 on its path and document which one.
+```
+
+`.nojekyll` ships in both `/` and `/docs/` so Pages serves `preview.html` and `assets/` exactly as committed. Asset paths are relative (`assets/…` from root files, `../assets/…` from `/docs` files) — never absolute — so project Pages (served under `/<repo>/`) resolve correctly.
 
 ---
 

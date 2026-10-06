@@ -72,7 +72,7 @@ img.chart{width:100%;border-radius:12px;border:1px solid var(--line);background:
 <section id="results">
 <h2>📊 Live measured results (the only local numbers)</h2>
 <div class="card"><b>Smoke:</b> 8 COCO images, real <code>yolo26n.pt</code> → p50 <b>58.85 ms</b>, 2.75 detections/image. Full list in <code>results/smoke.json</code>.<br><b>Bench:</b> 128 imgs / 929 instances → <b>P 0.683 · R 0.542 · mAP50 0.637 · mAP50-95 0.479</b>, 122 layers / 2.4M params / 5.5 GFLOPs, 0.8 / 4.4 / 2.1 ms pre/infer/post. Artifact <code>results/benchmark.json</code>.<br><span class="mut">Warning: COCO128 ≠ COCO val2017. Vendor 40.9 for 26n is val2017 (5000 imgs). Run <code>--full</code> before any fair comparison.</span></div>
-<p><img class="chart" src="assets/screenshots/latency.png" alt="Measured per-image latency chart from results/smoke.json"></p>
+<p><img class="chart" src="../assets/screenshots/latency.png" alt="Measured per-image latency chart from results/smoke.json"></p>
 <div class="note"><b>How to read the chart:</b> first tall bar = cold start (weight load). The rest = steady state. Any latency claim without cold-vs-warm split and p50/p95 is incomplete.</div>
 </section>
 
