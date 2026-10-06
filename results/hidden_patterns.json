@@ -1,0 +1,59 @@
+{
+  "env": {
+    "timestamp_utc": "2026-10-06T15:35:14.548039+00:00",
+    "python": "3.12.13 (main, May  8 2026, 18:32:55) [Clang 22.1.3 ]",
+    "platform": "Linux-7.0.0-34-generic-x86_64-with-glibc2.43",
+    "cpu_count": 28,
+    "torch": "2.13.0+cu130",
+    "torchvision": "0.28.0+cu130",
+    "ultralytics": "8.4.126",
+    "onnxruntime": "1.29.0",
+    "numpy": "2.4.6",
+    "cv2": "5.0.0",
+    "PIL": "12.3.0",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 3090"
+  },
+  "patterns": [
+    {
+      "id": "H2-latency-tail",
+      "metric": {
+        "p50_ms": 46.96883950055053,
+        "max_ms": 1376.722452998365,
+        "max_over_p50": 29.31140023125818,
+        "n": 8
+      },
+      "hypothesis": "NMS-free should show tighter tail than NMS path (deterministic latency).",
+      "test": "Compare nms=True vs nms=False p95/max on same images; tail-ratio delta >15% = meaningful.",
+      "status": "NEEDS-FULL-DATA"
+    },
+    {
+      "id": "H4-calibration-proxy",
+      "metric": {
+        "mean_detections_per_image": 2.75
+      },
+      "hypothesis": "Over-confident heads inflate count on cluttered frames; check conf histogram.",
+      "test": "Plot conf histogram + reliability curve on val2017; ECE >0.05 = miscalibrated.",
+      "status": "NEEDS-FULL-DATA"
+    },
+    {
+      "id": "H1-export-gap",
+      "status": "MISSING-EXPORT-RUN",
+      "action": "python -m src.benchmark_yolo26 --smoke --export onnx (CPU) ; GPU profile for TensorRT"
+    },
+    {
+      "id": "H3-small-object-stratification",
+      "hypothesis": "STAL (YOLO26) should lift AP-small disproportionately; YOLO27 N/S dropping P3 (medium map) predicts AP-medium dip unless compensated \u2014 the highest-value falsifiable check once YOLO27 ships.",
+      "test": "pycocotools per-area APs/APs/APm/APl on val2017 for 26n/s vs 27n/s; bootstrap 1000x; report \u0394APm with 95% CI; if \u0394APm<0 and CI excludes 0 \u2192 dual-scale trade-off confirmed.",
+      "status": "PREDICTION-REGISTERED (needs --full + YOLO27 release)",
+      "why_hidden": "Vendor tables report single mAP; stratification reveals WHERE gains come from \u2014 exactly what a PhD contribution needs."
+    },
+    {
+      "id": "H5-coco-vs-UL37-gap",
+      "hypothesis": "COCO mAP overstates production readiness on retail/warehouse/aerial (UL37 intent).",
+      "test": "Evaluate same checkpoint on COCO val2017 + 2+ domain sets (e.g., SKU-110k retail, VisDrone aerial, warehouse subset); report per-domain \u0394mAP; domain-tuned Enterprise backbones should close gap after fine-tune.",
+      "status": "PROTOCOL-READY (needs domain datasets; see docs/METHOD.md)"
+    }
+  ],
+  "rule": "No pattern is CONFIRMED without a local artifact + CI. Predictions above are pre-registered to prevent HARKing."
+}

@@ -1,0 +1,20 @@
+# Pinned, minimal, CPU-first. GPU extras are optional and documented.
+# Verified against Ultralytics docs pattern: `pip install ultralytics` is the
+# canonical entry point for YOLO26 (YOLO27 weights not public as of 2026-10-06).
+ultralytics>=8.3.0
+torch>=2.2.0
+torchvision>=0.17.0
+onnx>=1.15.0
+onnxruntime>=1.18.0
+opencv-python-headless>=4.9.0
+numpy>=1.26.0
+pillow>=10.0.0
+pyyaml>=6.0.0
+tqdm>=4.66.0
+pycocotools>=2.0.7
+matplotlib>=3.8.0
+pandas>=2.2.0
+seaborn>=0.13.0
+scipy>=1.12.0
+pytest>=8.0.0
+ruff>=0.4.0

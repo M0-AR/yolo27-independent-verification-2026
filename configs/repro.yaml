@@ -1,0 +1,45 @@
+# YOLO-26/27 independent verification — reproducible config
+# Everything here is explicit so a reviewer can reproduce bit-for-bit intent
+# (weights + data versions still must be logged at runtime; see src/run_utils.py).
+
+project: yolo27-independent-verification-2026
+seed: 0
+deterministic: true
+
+data:
+  # COCO128 is tiny smoke; val2017 full is the real gate (download on demand).
+  # Public canonical URLs, no mirroring:
+  coco128_url: "https://github.com/ultralytics/assets/releases/download/v0.0.0/coco128.zip"
+  coco_val2017_images: "http://images.cocodataset.org/zips/val2017.zip"
+  coco_val2017_ann: "http://images.cocodataset.org/annotations/annotations_trainval2017.zip"
+  imgsz: 640
+  conf: 0.25
+  iou: 0.7
+
+models:
+  # YOLO26 is downloadable today via ultralytics package. YOLO27 is WAITLIST-ONLY
+  # as of 2026-10-06 (docs.ultralytics.com/models/yolo27 + /yolo/yolo27).
+  # Harness auto-skips YOLO27 with status=UNAVAILABLE instead of fabricating.
+  yolo26_scales: ["yolo26n.pt", "yolo26s.pt", "yolo26m.pt", "yolo26l.pt", "yolo26x.pt"]
+  yolo27_scales_expected: ["yolo27n.pt", "yolo27s.pt", "yolo27m.pt", "yolo27l.pt"]
+  smoke_scale: "yolo26n.pt"
+
+eval:
+  metrics: ["mAP50-95", "mAP50", "precision", "recall", "latency_p50_ms", "latency_p95_ms", "fps"]
+  stratify_by: ["area_small_medium_large", "per_class_AP", "score_calibration", "latency_variance"]
+  n_bootstrap: 1000
+  ci: 0.95
+
+export:
+  formats: ["onnx", "openvino"]  # TensorRT only in GPU profile; CoreML only on macOS
+  nms_modes: [true, false]  # YOLO26 default is one-to-many+NMS; nms=False selects NMS-free head
+
+live:
+  sources: ["coco_sample_images", "webcam_optional", "video_file_optional"]
+  save_crops: false
+
+logging:
+  results_dir: "results"
+  save_json: true
+  save_csv: true
+  log_env: true  # torch, cuda, cpu, package versions -> results/env.json

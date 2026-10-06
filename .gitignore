@@ -1,0 +1,21 @@
+# Universal .gitignore — YOLO independent verification (from scratch)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+runs/
+*.pt
+*.onnx
+*.engine
+*.openvino/
+*.mlpackage
+*.tflite
+data/
+!data/.gitkeep
+mlruns/
+wandb/
+*.log
+.DS_Store
+.ipynb_checkpoints/
+.docker/

@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: Independent Verification of Ultralytics YOLO-26 Claims and Pre-Registered Audit of YOLO-27
+version: 0.1.0
+date-released: 2026-10-06
+authors:
+  - family-names: Independent Verification Authors
+license: MIT
+repository-code: file:///home/md/src/yolo27-independent-verification-2026
+keywords:
+  - YOLO26
+  - YOLO27
+  - object-detection
+  - reproducibility
+  - COCO
+  - NMS-free
+  - edge-AI
+abstract: CPU-first reproducible harness that verifies YOLO-26 on real public data and pre-registers falsifiable tests for unreleased YOLO-27 (UNAVAILABLE as of 2026-10-06).

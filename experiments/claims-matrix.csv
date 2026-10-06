@@ -1,0 +1,13 @@
+claim_id,statement_short,talk_or_vendor_number,source_today,status_2026-10-06,how_to_flip_to_VERIFIED
+C01,YOLO26 Jan2026 NMS-free 5 scales,40.9-57.5 mAP T4 (vendor table),"arxiv 2606.03748 + ultralytics news",VERIFIED-available (weights downloadable),"run: docker compose up verifier-cpu; check results/smoke.json OK_REAL_RUN"
+C02,YOLO26 COCO table 40.9-57.5 mAP 1.7-11.8ms,same as above,VENDOR-REPORTED,"run: scripts/download_coco_val.sh + benchmark --full; fill experiments/repro_table.csv"
+C03,"DFL removal MuSGD ProgLoss STAL 43% CPU INT8 -0.008",vendor paper,VENDOR-REPORTED,"ablation + INT8 A/B per docs/METHOD.md"
+C04,YOLO27 announced Sep2026 4 sizes 7 tasks 28 models,announcement,VENDOR-REPORTED (announcement factual; specs preliminary),"weights release; re-run --include-yolo27"
+C05,YOLO27l 60.4@640 61.2@800 RTX PRO 6000,"preliminary docs",VENDOR-REPORTED,"independent val2017 + latency rig after release"
+C06,"Hybrid N/S CNN dual-scale drop-P3; M/L query NMS-free UltraViT",docs preview,VENDOR-REPORTED,"arch inspection + H3 stratification test"
+C07,+1.8 to +3.5 mAP vs 26 L beats X no-X lineup,talk,VENDOR-REPORTED,"like-for-like --full table"
+C08,YOLO27 weights NOT public waitlist-only,docs banner,VERIFIED (unavailability),"probe in verify_claims.py; flips when download works"
+C09,Rust crate 5x faster 200x smaller,talk,VENDOR-REPORTED,"build crate + criterion bench vs Python ONNX"
+C10,"Distill +0.4-1 QAT +3-4 combined +5 INT8",talk,VENDOR-REPORTED,"controlled ablation n>=3 seeds"
+C11,"4B/day 300M dl 1T total ISO SOC GDPR 1.5B annot",marketing,VENDOR-REPORTED (not falsifiable here),"independent audit; out of scope for vision bench"
+C12,"20 formats 50 integ LiteRT 1.5x OpenVINO <5ms -50%",docs+talk,VENDOR-REPORTED,"per-device matrix in experiments/"

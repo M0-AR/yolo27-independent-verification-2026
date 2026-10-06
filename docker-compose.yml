@@ -1,0 +1,50 @@
+services:
+  verifier-cpu:
+    build: .
+    image: yolo27-verify:cpu-2026
+    container_name: yolo27-verify-cpu
+    volumes:
+      - ./results:/work/results
+      - ./data:/work/data
+      - ./experiments:/work/experiments
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ULTRALYTICS_HUB_OFFLINE=true
+    command: bash -c "python -m src.verify_claims && python -m src.smoke_live && python -m src.benchmark_yolo26 --smoke"
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8G
+
+  # Full COCO val2017 gate — manual profile, needs ~1GB annotations + 8GB images.
+  # Run: docker compose --profile full up verifier-full
+  verifier-full:
+    extends: verifier-cpu
+    container_name: yolo27-verify-full
+    profiles: ["full"]
+    command: bash -c "python -m src.benchmark_yolo26 --full --imgsz 640 && python -m src.hidden_patterns"
+    deploy:
+      resources:
+        limits:
+          cpus: "8"
+          memory: 16G
+
+  # GPU profile — needs nvidia-container-toolkit on host.
+  # Run: docker compose --profile gpu up verifier-gpu
+  verifier-gpu:
+    build: .
+    image: yolo27-verify:cpu-2026
+    container_name: yolo27-verify-gpu
+    profiles: ["gpu"]
+    volumes:
+      - ./results:/work/results
+      - ./data:/work/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: bash -c "python -m src.benchmark_yolo26 --full --export onnx && python -m src.hidden_patterns"
