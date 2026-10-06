@@ -2,8 +2,8 @@
 
 Downloads (if missing):
   - COCO128 (Ultralytics assets, 128 images, canonical smoke set)
-  - 2 sample images via Ultralytics assets (bus.jpg, zidane.jpg pattern)
-Runs YOLO26n inference on CPU, times it, writes results/smoke.json.
+Runs YOLO26n inference on available device (CPU or CUDA if present),
+times per-image latency with cold-start split, writes results/smoke.json.
 
 If network/weights unavailable, writes status=SKIPPED with reason —
 never writes fake mAP/latency.
@@ -56,7 +56,8 @@ def main() -> int:
             "p50_ms": lat_sorted[len(lat_sorted)//2],
             "mean_detections_per_image": sum(counts)/max(1, len(counts)),
             "env": env,
-            "note": "CPU smoke only; full mAP gate is benchmark_yolo26 --full on COCO val2017.",
+            "device_note": "device = whatever torch reports in env (cuda_available + cuda_device); first sample includes cold start (weight load + warmup), rest are steady state — always split cold vs warm, report warm p50/p95.",
+            "note": "Smoke latency only; full mAP gate is benchmark_yolo26 --full on COCO val2017.",
         }
         p = save_json("smoke.json", payload)
         print(f"[smoke] OK p50={payload['p50_ms']:.1f}ms mean_det={payload['mean_detections_per_image']:.2f} -> {p}")

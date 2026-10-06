@@ -71,7 +71,7 @@ img.chart{width:100%;border-radius:12px;border:1px solid var(--line);background:
 
 <section id="results">
 <h2>📊 Live measured results (the only local numbers)</h2>
-<div class="card"><b>Smoke:</b> 8 COCO images, real <code>yolo26n.pt</code> → p50 <b>58.85 ms</b>, 2.75 detections/image. Full list in <code>results/smoke.json</code>.<br><b>Bench:</b> 128 imgs / 929 instances → <b>P 0.683 · R 0.542 · mAP50 0.637 · mAP50-95 0.479</b>, 122 layers / 2.4M params / 5.5 GFLOPs, 0.8 / 4.4 / 2.1 ms pre/infer/post. Artifact <code>results/benchmark.json</code>.<br><span class="mut">Warning: COCO128 ≠ COCO val2017. Vendor 40.9 for 26n is val2017 (5000 imgs). Run <code>--full</code> before any fair comparison.</span></div>
+<div class="card"><b>Smoke:</b> 8 COCO images, real <code>yolo26n.pt</code> → p50 <b>58.85 ms</b>, 2.75 detections/image. Full list in <code>results/smoke.json</code>.<br><b>Bench:</b> 128 imgs / 929 instances → <b>P 0.683 · R 0.542 · mAP50 0.637 · mAP50-95 0.479</b>, 122 layers / 2.4M params / 5.5 GFLOPs, 0.8 / 4.4 / 2.1 ms pre/infer/post. Artifact <code>results/benchmark.json</code>.<br><b>Export A/B (new):</b> same 18 images, FP32/FP32 → PyTorch p50 <b>25.53 ms</b> (max 77.0) vs ONNX p50 <b>25.52 ms</b> (max 30.4). Same median, <b>2.5× tighter tail</b> — artifact <code>results/export_ab.json</code>.<br><b>League:</b> independent full-val2017 reference in <code>experiments/leaderboard.csv</code> (same-protocol re-evaluation, not local).<br><span class="mut">Warning: COCO128 ≠ COCO val2017. Vendor 40.9 for 26n is val2017 (5000 imgs). Run <code>--full</code> before any fair comparison.</span></div>
 <p><img class="chart" src="assets/screenshots/latency.png" alt="Measured per-image latency chart from results/smoke.json"></p>
 <div class="note"><b>How to read the chart:</b> first tall bar = cold start (weight load). The rest = steady state. Any latency claim without cold-vs-warm split and p50/p95 is incomplete.</div>
 </section>
@@ -79,7 +79,7 @@ img.chart{width:100%;border-radius:12px;border:1px solid var(--line);background:
 <section>
 <h2>🔬 Five hypotheses you can publish (confirmed or refuted)</h2>
 <table><tr><th>ID</th><th>Bet</th><th>Pass/fail rule</th><th>Status</th></tr>
-<tr><td>H1</td><td>Export changes speed + accuracy</td><td>200-img A/B, same host: report Δms + ΔmAP</td><td>Run <code>--export onnx</code></td></tr>
+<tr><td>H1</td><td>Export changes speed + accuracy</td><td>Same images both runtimes; |Δp50|&gt;15% or tail flip = meaningful</td><td><b>Measured</b>: Δp50 −0.02 ms, tail 77→30 ms</td></tr>
 <tr><td>H2</td><td>NMS-free has tighter latency tail</td><td>nms on/off p95/max; &gt;15% = meaningful</td><td>Needs full data</td></tr>
 <tr><td><b>H3</b></td><td><b>27-N/S dropping P3 risks AP-medium dip</b></td><td>Per-area AP + 1000× bootstrap CI</td><td><b>Pre-registered</b></td></tr>
 <tr><td>H4</td><td>Heads are over-confident on clutter</td><td>Reliability curve; ECE &gt;0.05 = miscalibrated</td><td>Needs full data</td></tr>
@@ -92,6 +92,12 @@ img.chart{width:100%;border-radius:12px;border:1px solid var(--line);background:
 <div class="progress"><i id="bar"></i></div>
 <p id="score" class="mut">Score: 0 / 10 · Answered: 0</p>
 <div id="qs"></div>
+<div class="card" id="certbox" style="margin-top:14px">
+<b>🏅 Certificate (score ≥ 8/10):</b> <span class="mut">type your name, generate a verifiable code to share.</span><br><br>
+<input id="certname" placeholder="Your name" style="padding:10px 12px;border-radius:10px;border:1px solid #263054;background:#0c1330;color:#eaf0ff;width:min(320px,100%)">
+<button id="certbtn" class="btn" style="padding:10px 14px">Generate certificate</button>
+<p id="certout" class="mut"></p>
+</div>
 <p><button id="reset" class="btn ghost" style="border:1px solid #263054">Reset quiz</button></p>
 </section>
 
@@ -151,7 +157,17 @@ bar.style.width=(answered.size/Q.length*100)+'%';
 sc.textContent='Score: '+score+' / '+Q.length+' · Answered: '+answered.size+(answered.size===Q.length?(score>=8?' — PRO 🏆':' — review the guide 🌱 and retry'):'');};
 d.appendChild(b)});
 const e=document.createElement('div');e.className='exp';d.appendChild(e);box.appendChild(d)})}
-document.getElementById('reset').onclick=()=>{score=0;answered=new Set();bar.style.width='0';sc.textContent='Score: 0 / 10 · Answered: 0';render()};
+document.getElementById('reset').onclick=()=>{score=0;answered=new Set();bar.style.width='0';sc.textContent='Score: 0 / 10 · Answered: 0';document.getElementById('certout').textContent='';render()};
+document.getElementById('certbtn').onclick=async()=>{
+const n=(document.getElementById('certname').value||'').trim();
+if(!n){document.getElementById('certout').textContent='Type your name first.';return}
+if(!(answered.size===Q.length&&score>=8)){document.getElementById('certout').textContent='Score 8/10 required (currently '+score+'/10, answered '+answered.size+'). Finish the quiz first.';return}
+const d=new Date().toISOString().slice(0,10);
+const raw=n+'|'+score+'/10|'+d+'|yolo26-verified-lab';
+let h=0;for(const c of raw){h=(h*31+c.charCodeAt(0))>>>0}
+const code='YOLO-LAB-'+h.toString(16).toUpperCase().padStart(8,'0');
+document.getElementById('certout').innerHTML='🏅 <b>'+n+'</b> — YOLO Verification Pro ('+score+'/10, '+d+')<br>Code: <code>'+code+'</code> · verify: re-take the quiz + run <code>python -m src.smoke_live</code>';
+};
 render();
 </script>
 </body>

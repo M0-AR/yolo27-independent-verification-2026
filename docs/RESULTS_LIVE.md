@@ -1,7 +1,15 @@
-# LIVE MEASURED RESULTS — 2026-10-06 (RTX 3090, ultralytics 8.4.126, torch 2.13)
+# LIVE MEASURED RESULTS — 2026-10-06/07 (RTX 3090, ultralytics 8.4.126, torch 2.13)
 
 These are the ONLY numbers in this repo measured locally. Everything else
-remains VENDOR-REPORTED in claims-matrix.csv. Do not mix them.
+remains VENDOR-REPORTED in claims-matrix.csv, or REFERENCE-NOT-LOCAL in
+experiments/leaderboard.csv (independent same-protocol re-evaluation). Do not mix them.
+
+## Export A/B (src/export_ab.py, same 18 COCO128 images, FP32 vs FP32)
+- PyTorch p50_ms: 25.53 (max 77.05)
+- ONNX p50_ms: 25.52 (max 30.39)
+- delta_p50: -0.02 ms (parity) but max tail 77.0 -> 30.4 (2.5x tighter on ONNX)
+- artifact: results/export_ab.json — H1 now MEASURED-LOCAL-SMOKE
+- rule honored: same artifact, same precision, warmup dropped, per-image trace kept
 
 ## Smoke (src/smoke_live.py, data/coco128 8 images, yolo26n.pt real)
 - p50_ms: 58.85

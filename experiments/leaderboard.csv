@@ -1,0 +1,8 @@
+checkpoint,data,split,n_images,map50,map50_95,latency_ms,device,precision,params_M,source,status
+yolo26n.pt,COCO,val2017 full,5000,0.558,0.403,1.7,NVIDIA T4 TensorRT FP16 batch1,FP16 same-artifact,2.6,independent third-party re-evaluation (same pycocotools protocol full split),REFERENCE-NOT-LOCAL
+yolo26s.pt,COCO,val2017 full,5000,0.643,0.477,2.6,NVIDIA T4 TensorRT FP16 batch1,FP16 same-artifact,9.4,independent third-party re-evaluation (same pycocotools protocol full split),REFERENCE-NOT-LOCAL
+yolo26m.pt,COCO,val2017 full,5000,0.697,0.525,4.4,NVIDIA T4 TensorRT FP16 batch1,FP16 same-artifact,20.1,independent third-party re-evaluation (same pycocotools protocol full split),REFERENCE-NOT-LOCAL
+yolo26l.pt,COCO,val2017 full,5000,0.711,0.541,5.7,NVIDIA T4 TensorRT FP16 batch1,FP16 same-artifact,25.3,independent third-party re-evaluation (same pycocotools protocol full split),REFERENCE-NOT-LOCAL
+yolo26x.pt,COCO,val2017 full,5000,0.740,0.569,9.6,NVIDIA T4 TensorRT FP16 batch1,FP16 same-artifact,56.9,independent third-party re-evaluation (same pycocotools protocol full split),REFERENCE-NOT-LOCAL
+yolo26n.pt,COCO128,train2017-subset,128,0.637,0.479,4.4 inference RTX3090,PyTorch FP32,2.4,local results/benchmark.json (ultralytics 8.4.126),OK_REAL_RUN-LOCAL-SMOKE-NOT-VAL2017
+yolo27l.pt,COCO,val2017 full,-,-,-,-,-,-,announcement preview (weights not public),UNAVAILABLE

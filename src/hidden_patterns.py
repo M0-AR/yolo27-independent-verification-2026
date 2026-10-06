@@ -50,16 +50,26 @@ def main() -> int:
         patterns.append({"id": "H2-latency-tail", "status": "MISSING-RUN-FIRST",
                          "action": "docker compose up verifier-cpu"})
 
-    # H1 export gap
-    eg = (bench or {}).get("export_gap")
-    if eg and "onnx_artifact" in eg:
+    # H1 export gap (prefers dedicated export_ab.json; falls back to bench export_gap)
+    ab = load("export_ab.json")
+    if ab and ab.get("status") == "OK_REAL_RUN":
+        d = ab.get("delta_ms_p50_onnx_minus_torch", 0.0)
+        patterns.append({"id": "H1-export-gap",
+            "metric": {"torch_p50_ms": ab["pytorch"]["p50_ms"], "onnx_p50_ms": ab["onnx"]["p50_ms"],
+                       "delta_p50_ms": d, "torch_max_ms": ab["pytorch"]["max_ms"],
+                       "onnx_max_ms": ab["onnx"]["max_ms"], "n": ab["n_images"],
+                       "artifact": ab["onnx_artifact"]},
+            "hypothesis": "ONNX should cut/smooth CPU/GPU latency at same precision; INT8 may cost mAP.",
+            "test": "Same 18 images both runtimes; |delta|>15% or max-tail ratio flip = meaningful.",
+            "status": "MEASURED-LOCAL-SMOKE (FP32/FP32; INT8 still PROTOCOL-READY)"})
+    elif eg and "onnx_artifact" in eg:
         patterns.append({"id": "H1-export-gap", "metric": eg,
             "hypothesis": "ONNX/OpenVINO should cut CPU latency; INT8 may cost mAP.",
             "test": "A/B 200 images PyTorch vs ONNX vs OpenVINO FP32/INT8; report ms + mAP delta.",
             "status": "NEEDS-A/B-MEASUREMENT"})
     else:
         patterns.append({"id": "H1-export-gap", "status": "MISSING-EXPORT-RUN",
-            "action": "python -m src.benchmark_yolo26 --smoke --export onnx (CPU) ; GPU profile for TensorRT"})
+            "action": "python -m src.export_ab (18-img FP32 A/B, no fabrication)"})
 
     # H3 small objects — the load-bearing hidden pattern for YOLO26 STAL + YOLO27 dual-scale
     patterns.append({

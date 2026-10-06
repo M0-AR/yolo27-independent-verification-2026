@@ -10,7 +10,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - ULTRALYTICS_HUB_OFFLINE=true
-    command: bash -c "python -m src.verify_claims && python -m src.smoke_live && python -m src.benchmark_yolo26 --smoke"
+    command: bash -c "python -m src.verify_claims && python -m src.smoke_live && python -m src.benchmark_yolo26 --smoke && python -m src.export_ab && python -m src.drift_watch && python -m src.hidden_patterns"
     deploy:
       resources:
         limits:

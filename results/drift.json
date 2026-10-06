@@ -1,0 +1,30 @@
+{
+  "status": "OK_BASELINE_PROFILED",
+  "baseline": {
+    "n": 8,
+    "p50_ms": 46.96883950055053,
+    "max_ms": 1376.722452998365,
+    "mean_det": 2.75
+  },
+  "rules": {
+    "alert_if_p50_shift_pct": 30,
+    "alert_if_det_shift_abs": 1.5,
+    "method": "KS/PSI on counts + conf when prediction logs exist; here baseline profiling only."
+  },
+  "next": "log live predictions to results/live_log.jsonl then re-run with --live to compare",
+  "env": {
+    "timestamp_utc": "2026-10-06T16:42:12.176843+00:00",
+    "python": "3.12.13 (main, May  8 2026, 18:32:55) [Clang 22.1.3 ]",
+    "platform": "Linux-7.0.0-34-generic-x86_64-with-glibc2.43",
+    "cpu_count": 28,
+    "torch": "2.13.0+cu130",
+    "torchvision": "0.28.0+cu130",
+    "ultralytics": "8.4.126",
+    "onnxruntime": "1.29.0",
+    "numpy": "2.4.6",
+    "cv2": "5.0.0",
+    "PIL": "12.3.0",
+    "cuda_available": true,
+    "cuda_device": "NVIDIA GeForce RTX 3090"
+  }
+}

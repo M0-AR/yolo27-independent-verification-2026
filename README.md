@@ -195,7 +195,9 @@ You now know more than most interview candidates: mAP vs mAP50, p50 vs p95, NMS-
 | Feature | What you get | Where |
 |---|---|---|
 | ✅ Honesty gate | Every announcement labeled VERIFIED / VENDOR-REPORTED / UNAVAILABLE — no silent hype | `src/verify_claims.py`, `experiments/claims-matrix.csv` |
-| ⚡ Real CPU→GPU ladder | Smoke (minutes) → full COCO (hours) → export A/B → stratified analysis | `src/smoke_live.py`, `src/benchmark_yolo26.py` |
+| ⚡ Real CPU→GPU ladder | Smoke (minutes) → full COCO (hours) → export A/B → stratified analysis | `src/smoke_live.py`, `src/benchmark_yolo26.py`, `src/export_ab.py` |
+| 🏆 Open league | Same-protocol leaderboard: local smoke + independent val2017 reference, never mixed | `experiments/leaderboard.csv` |
+| 📡 Drift watch | Baseline profile + alert rules (inputs + outputs) | `src/drift_watch.py` → `results/drift.json` |
 | 🔬 5 pre-registered hypotheses | Metric + threshold + flip rule for each; publishable whether confirmed or refuted | `src/hidden_patterns.py` |
 | 🌍 Real-world protocol | COCO + webcam/phone/warehouse + 2-domain shift test (UL37 thesis) | `docs/METHOD.md` |
 | 🐳 One-command Docker | `verifier-cpu` (default), `verifier-full`, `verifier-gpu` profiles | `Dockerfile`, `docker-compose.yml` |
@@ -272,9 +274,22 @@ python -m src.benchmark_yolo26 --full --include-yolo27
 - 0.8 ms preprocess / 4.4 ms inference / 2.1 ms postprocess (test machine, see `docs/RESULTS_LIVE.md`)
 - ⚠️ COCO128 ≠ COCO val2017. Vendor 40.9 for 26n is on val2017 (5000 imgs). Do not compare directly — run `--full`.
 
+**Export A/B — `src/export_ab.py`, same 18 images, FP32 vs FP32 (never mix precisions):**
+
+- PyTorch p50 **25.53 ms** (max 77.0) vs ONNX p50 **25.52 ms** (max 30.4) · Δp50 **−0.02 ms**
+- Same median, **2.5× tighter tail** on ONNX — artifact `results/export_ab.json` → H1 now **MEASURED-LOCAL-SMOKE** (INT8 still protocol-ready)
+- Best-practice rules honored: same artifact, same precision, warmup dropped, per-image trace kept
+
+**Open league — `experiments/leaderboard.csv`:**
+
+- Independent full-val2017 reference rows (same-protocol third-party re-evaluation, T4 TensorRT FP16): 26n **40.3** / 26s **47.7** / 26m **52.5** / 26l **54.1** / 26x **56.9** mAP50-95 — labeled **REFERENCE-NOT-LOCAL**
+- Our local smoke row labeled **OK_REAL_RUN-LOCAL-SMOKE-NOT-VAL2017**; YOLO-27 row **UNAVAILABLE**
+
+**Monitor — `src/drift_watch.py`:** baseline profile in `results/drift.json` (inputs + outputs, alert on p50 +30% or detections ±1.5).
+
 **YOLO-27 probe:** `results/yolo27_blocked.json` → **UNAVAILABLE** (waitlist-only as of 2026-10-06).
 
-Full env + copy-paste commands: [`docs/RESULTS_LIVE.md`](docs/RESULTS_LIVE.md) · [`experiments/repro_table.csv`](experiments/repro_table.csv).
+Full env + copy-paste commands: [`docs/RESULTS_LIVE.md`](docs/RESULTS_LIVE.md) · [`experiments/repro_table.csv`](experiments/repro_table.csv) · [`experiments/leaderboard.csv`](experiments/leaderboard.csv).
 
 ---
 
@@ -320,7 +335,7 @@ YOLO lineage (NMS-free dual assignment → end-to-end → hybrid) parallels quer
 
 | ID | Hypothesis | Falsifiable test | Status |
 |---|---|---|---|
-| H1 Export gap | ONNX/OpenVINO cut CPU ms; INT8 costs mAP unless calibrated/QAT | 200-img A/B same host: Δms + ΔmAP | Run `--export onnx` |
+| H1 Export gap | Same-precision A/B; INT8 costs mAP unless calibrated/QAT | Same 18 imgs both runtimes; \|Δp50\|>15% or tail flip = meaningful | **MEASURED**: Δp50 −0.02 ms, tail 77→30 ms |
 | H2 Latency tail | NMS-free tighter tail; NMS wider variance | nms on/off p95/max; >15% = meaningful | Needs full data (smoke n=8) |
 | **H3 Small/medium stratification** | STAL lifts AP-small; **27-N/S dropping P3 risks AP-medium dip** | Per-area AP + bootstrap CI, 26n/s vs 27n/s | **PREDICTION-REGISTERED** |
 | H4 Calibration | Heads over-confident on clutter; ECE>0.05 = miscalibrated | Reliability curve + ECE | Needs full data |
@@ -362,6 +377,8 @@ YOLO lineage (NMS-free dual assignment → end-to-end → hybrid) parallels quer
 ├── src/verify_claims.py    # honesty gate → results/claims_gate.json
 ├── src/smoke_live.py       # real-pixel smoke → results/smoke.json
 ├── src/benchmark_yolo26.py # --smoke / --full / --export + YOLO-27 blocker
+├── src/export_ab.py        # FP32/FP32 ONNX A/B → results/export_ab.json (H1 measured)
+├── src/drift_watch.py      # baseline profile → results/drift.json
 ├── src/hidden_patterns.py  # H1–H5 with flip rules
 ├── scripts/download_*.sh   # canonical public URLs only
 ├── experiments/claims-matrix.csv + repro_table.csv

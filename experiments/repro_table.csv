@@ -1,5 +1,6 @@
 scale,data,split,n_images,n_instances,P,R,mAP50,mAP50_95,p50_ms_device,device,ultralytics,artifact,status
 yolo26n.pt,coco128,train2017-subset,8,-, -, -, -, -,58.85 RTX3090-warm-median,RTX3090 CUDA,8.4.126,results/smoke.json,OK_REAL_RUN smoke (latency only)
 yolo26n.pt,coco128,train2017-full,128,929,0.683,0.542,0.637,0.479,4.4 inference RTX3090,RTX3090 CUDA,8.4.126,results/benchmark.json,OK_REAL_RUN (NOT comparable to val2017 vendor 40.9)
+yolo26n.pt,coco128,export-AB-subset,18,-,-,-,-,torch 25.53 onnx 25.52 RTX3090,RTX3090 CUDA OR-CUDA,8.4.126,results/export_ab.json,OK_REAL_RUN FP32/FP32 tail 77.0->30.4
 yolo26n/s/m.pt,COCO val2017,val2017 5000,-,-,-,-,-,-,-,-,scripts/download_coco_val.sh then --full,PENDING
 yolo27n/s/m/l.pt,COCO val2017,-,-,-,-,-,-,-,-,-,-,results/yolo27_blocked.json,UNAVAILABLE until release
