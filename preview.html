@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YOLO-26 Verified · YOLO-27 Ready — Interactive Lab</title>
+<meta name="description" content="Independent reproducible verification of YOLO-26 + ready harness for YOLO-27. Live results, beginner-to-pro guide, interactive quiz.">
+<style>
+:root{--bg:#0b1020;--card:#141b33;--ink:#eaf0ff;--mut:#9fb0d0;--acc:#7c9aff;--ok:#3ddc84;--warn:#ffb020;--line:#263054;--radius:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#1c2a5e 0%,transparent 60%),radial-gradient(900px 500px at 90% 0%,#123a3a 0%,transparent 55%),var(--bg);color:var(--ink)}
+a{color:var(--acc)}.wrap{max-width:1080px;margin:0 auto;padding:28px 18px 80px}
+.hero{background:linear-gradient(180deg,rgba(124,154,255,.16),rgba(124,154,255,.04));border:1px solid var(--line);border-radius:22px;padding:34px 28px;text-align:center}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:14px 0}.badges span{border:1px solid var(--line);background:#0f1730;padding:5px 10px;border-radius:999px;font-size:12px;color:var(--mut)}
+h1{font-size:clamp(28px,4vw,46px);margin:6px 0}.sub{color:var(--mut);max-width:760px;margin:0 auto;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:22px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card h3{margin:0 0 8px;font-size:17px}.kpi{font-size:30px;font-weight:800}.mut{color:var(--mut);font-size:14px}
+.btn{display:inline-block;background:var(--acc);color:#0a1030;font-weight:800;padding:12px 18px;border-radius:12px;text-decoration:none;margin:6px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+section{margin:34px 0}h2{font-size:26px;margin:0 0 10px}p.lead{color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid var(--line);padding:9px 10px;text-align:left}th{background:#0f1730}
+code{background:#0b1330;border:1px solid var(--line);padding:2px 6px;border-radius:8px;font-size:13px}
+pre{background:#0a1128;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;font-size:13px}
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.q{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:#101736}
+.q button{display:block;width:100%;text-align:left;margin:7px 0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0c1330;color:var(--ink);cursor:pointer}
+.q button.correct{border-color:var(--ok);background:rgba(61,220,132,.12)}.q button.wrong{border-color:#ff5d5d;background:rgba(255,93,93,.12)}
+.q .exp{display:none;color:var(--mut);font-size:14px;margin-top:8px}.q.done .exp{display:block}
+.progress{height:10px;background:#0a1128;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--ok))}
+.diagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}.step{background:#0f1730;border:1px dashed var(--line);border-radius:12px;padding:12px;text-align:center;font-size:14px}
+footer{color:var(--mut);font-size:13px;text-align:center;margin-top:40px}
+img.chart{width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+.note{border-left:4px solid var(--warn);padding:10px 14px;background:rgba(255,176,32,.08);border-radius:0 12px 12px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero" id="top">
+<div class="badges"><span>MIT</span><span>Python 3.11+</span><span>Docker ready</span><span>Seed 0 reproducible</span><span>Live JSON results</span></div>
+<h1>🔍 YOLO-26 Verified · YOLO-27 Ready</h1>
+<p class="sub">An independent lab that <b>measures</b> YOLO-26 on public photos and is <b>already prepared</b> to measure YOLO-27 on release day. No hype numbers. Every claim labeled. From first photo to publishable table.</p>
+<p><a class="btn" href="#quiz">🎓 Start the interactive quiz</a> <a class="btn ghost" href="#run">🚀 Run in 30 seconds</a></p>
+<p class="mut">Summary: YOLO-26 works today — we measured <b>mAP50 0.637 / mAP50-95 0.479</b> (COCO128) at <b>~4.4 ms inference</b>. YOLO-27 is announced but <b>weights not public</b>, so its 60+ mAP figures are previews, not measurements. This page proves both with artifacts.</p>
+</div>
+
+<div class="grid">
+<div class="card"><h3>⚡ Measured today</h3><div class="kpi">0.479</div><div class="mut">yolo26n mAP50-95 (COCO128, 128 imgs) · P 0.683 R 0.542 · <a href="#results">artifacts</a></div></div>
+<div class="card"><h3>⏱️ Real speed</h3><div class="kpi">58.9 ms p50</div><div class="mut">8-image smoke · cold 1376 ms vs steady ~13–66 ms · <a href="#results">why tails matter</a></div></div>
+<div class="card"><h3>🛡️ YOLO-27 status</h3><div class="kpi">UNAVAILABLE</div><div class="mut">Waitlist-only · harness blocks honestly · one flag reruns on release day</div></div>
+<div class="card"><h3>🔬 Hidden bet</h3><div class="kpi">H3: AP-medium?</div><div class="mut">Dropping the P3 scale may dip medium-object AP — pre-registered test with CIs</div></div>
+</div>
+
+<section id="learn">
+<h2>🌱 Learn from scratch to pro (5 minutes)</h2>
+<p class="lead">One idea at a time. By the end you beat most interview candidates.</p>
+<div class="diagram">
+<div class="step">📷 <b>Photo in</b><br>pixels</div>
+<div class="step">🧠 <b>YOLO looks once</b><br>one network, all boxes</div>
+<div class="step">📦 <b>Boxes out</b><br>what + where</div>
+<div class="step">📏 <b>mAP scores it</b><br>50 = loose, 50-95 = strict</div>
+<div class="step">⏱️ <b>p50/p95 times it</b><br>median vs near-worst</div>
+<div class="step">📦➡️🚚 <b>Export ships it</b><br>ONNX / TensorRT / OpenVINO</div>
+</div>
+<div class="card" style="margin-top:14px">
+<b>Sizes:</b> <code>n</code> tiny/fast (camera) → <code>s</code> → <code>m</code> → <code>l</code> accurate/hungry (GPU). Bigger is not better — it is a trade-off this repo measures on <i>your</i> hardware.<br><br>
+<b>NMS-free in one line:</b> old detectors predicted 100 overlapping boxes then cleaned up with hand-tuned NMS. YOLO-26/27 learn to output <b>one clean box</b> directly — simpler, more predictable latency. Use <code>nms=False</code> to pick the clean head.<br><br>
+<b>Export gap in one line:</b> PyTorch accuracy ≠ camera accuracy. Converting to ONNX/TensorRT/OpenVINO/LiteRT changes speed <i>and</i> accuracy. Measure both sides on the same images — that delta is hypothesis H1.
+</div>
+</section>
+
+<section id="results">
+<h2>📊 Live measured results (the only local numbers)</h2>
+<div class="card"><b>Smoke:</b> 8 COCO images, real <code>yolo26n.pt</code> → p50 <b>58.85 ms</b>, 2.75 detections/image. Full list in <code>results/smoke.json</code>.<br><b>Bench:</b> 128 imgs / 929 instances → <b>P 0.683 · R 0.542 · mAP50 0.637 · mAP50-95 0.479</b>, 122 layers / 2.4M params / 5.5 GFLOPs, 0.8 / 4.4 / 2.1 ms pre/infer/post. Artifact <code>results/benchmark.json</code>.<br><span class="mut">Warning: COCO128 ≠ COCO val2017. Vendor 40.9 for 26n is val2017 (5000 imgs). Run <code>--full</code> before any fair comparison.</span></div>
+<p><img class="chart" src="assets/screenshots/latency.png" alt="Measured per-image latency chart from results/smoke.json"></p>
+<div class="note"><b>How to read the chart:</b> first tall bar = cold start (weight load). The rest = steady state. Any latency claim without cold-vs-warm split and p50/p95 is incomplete.</div>
+</section>
+
+<section>
+<h2>🔬 Five hypotheses you can publish (confirmed or refuted)</h2>
+<table><tr><th>ID</th><th>Bet</th><th>Pass/fail rule</th><th>Status</th></tr>
+<tr><td>H1</td><td>Export changes speed + accuracy</td><td>200-img A/B, same host: report Δms + ΔmAP</td><td>Run <code>--export onnx</code></td></tr>
+<tr><td>H2</td><td>NMS-free has tighter latency tail</td><td>nms on/off p95/max; &gt;15% = meaningful</td><td>Needs full data</td></tr>
+<tr><td><b>H3</b></td><td><b>27-N/S dropping P3 risks AP-medium dip</b></td><td>Per-area AP + 1000× bootstrap CI</td><td><b>Pre-registered</b></td></tr>
+<tr><td>H4</td><td>Heads are over-confident on clutter</td><td>Reliability curve; ECE &gt;0.05 = miscalibrated</td><td>Needs full data</td></tr>
+<tr><td>H5</td><td>COCO overstates shop/factory/drone</td><td>Same ckpt on COCO + 2 domains: ΔmAP</td><td>Protocol ready</td></tr></table>
+</section>
+
+<section id="quiz" class="quiz">
+<h2>🎓 Interactive quiz — scratch to pro (10 questions)</h2>
+<p class="lead">Click an answer. Instant grading + explanation. Score ≥ 8/10 = pro.</p>
+<div class="progress"><i id="bar"></i></div>
+<p id="score" class="mut">Score: 0 / 10 · Answered: 0</p>
+<div id="qs"></div>
+<p><button id="reset" class="btn ghost" style="border:1px solid #263054">Reset quiz</button></p>
+</section>
+
+<section id="run">
+<h2>🚀 Run it (copy-paste)</h2>
+<pre>docker compose build
+docker compose up verifier-cpu
+cat results/smoke.json
+# Full paper-grade gate:
+bash scripts/download_coco_val.sh
+docker compose --profile full up verifier-full
+# YOLO-27 day one:
+python -m src.benchmark_yolo26 --full --include-yolo27</pre>
+<p class="mut">Without Docker: <code>pip install -r requirements.txt &amp;&amp; python -m src.verify_claims &amp;&amp; python -m src.smoke_live &amp;&amp; python -m src.benchmark_yolo26 --smoke</code></p>
+</section>
+
+<section>
+<h2>🧑‍💼 Who uses this?</h2>
+<div class="grid">
+<div class="card"><b>🎓 Student</b><br><span class="mut">Weekend thesis: smoke Monday, full COCO Friday, H3 into a workshop paper.</span></div>
+<div class="card"><b>🔧 Edge engineer</b><br><span class="mut">Will 26n hit 30 FPS on <i>this</i> PC? Warm p95 answers the purchase order.</span></div>
+<div class="card"><b>🏭 Factory lead</b><br><span class="mut">FP32 vs INT8 without losing small defects? H1/H4 decide.</span></div>
+<div class="card"><b>🛒 Retail / 🚁 Drone</b><br><span class="mut">COCO knows sofas, not shelves. H5 quantifies the domain drop.</span></div>
+</div>
+</section>
+
+<section>
+<h2>🌐 Deploy this page (2 minutes)</h2>
+<p>1) Push to GitHub → 2) <b>Settings → Pages</b> → 3) Source: <b>Deploy from a branch</b> → Branch: <b>main</b>, folder <b>/ (root)</b> → Save → open <code>https://YOUR-USERNAME.github.io/YOUR-REPO/preview.html</code>. A <code>.nojekyll</code> file is included so assets serve exactly as committed.</p>
+</section>
+
+<footer>MIT (harness only). COCO/weights keep upstream licenses. Numbers above are local artifacts in <code>results/</code>; all other figures are labeled vendor-reported in <code>experiments/claims-matrix.csv</code>.</footer>
+</div>
+<script>
+const Q=[
+{q:"What does YOLO output for a photo?",o:["One label for the whole image","Boxes + labels + positions for each object","A caption sentence","A depth video"],a:1,e:"Detection = what + where per object. Classification alone is one label for the whole image."},
+{q:"What does n/s/m/l mean?",o:["Training epochs","Model size/speed trade-off: nano→large","Camera brands","Dataset splits"],a:1,e:"n is tiny/fast (edge), l is big/accurate (GPU). Pick by measured p95, not by name."},
+{q:"mAP50 vs mAP50-95?",o:["Same thing","mAP50 is loose (≥50% overlap); mAP50-95 is strict average","mAP50 is stricter","mAP is speed"],a:1,e:"Our run: mAP50 0.637 but strict mAP50-95 0.479. Papers report the strict one."},
+{q:"p50 vs p95 latency?",o:["Median vs near-worst-case","Both mean average","GPU vs CPU","Train vs test"],a:0,e:"Factories buy on p95 — the slow surprise that stops the line."},
+{q:"Why was our first image 1376 ms and the rest ~30 ms?",o:["Bug","Cold start: loading weights + warmup vs steady state","Wrong model","Internet speed"],a:1,e:"Always split cold vs warm. Report warm p50/p95."},
+{q:"What is NMS?",o:["A GPU brand","Cleanup step that deletes overlapping duplicate boxes","A dataset","A loss function"],a:1,e:"NMS-free means the network outputs one clean box directly — no cleanup pass."},
+{q:"Which flag selects the NMS-free head on N/S?",o:["nms=False","imgsz=1280","epochs=100","device=cpu"],a:0,e:"Same YOLO API; the pipeline is picked from the model + flag."},
+{q:"What is the export gap (H1)?",o:["Price of GPUs","PyTorch numbers ≠ deployed ONNX/TensorRT/OpenVINO numbers","Git vs Docker","Train vs quiz"],a:1,e:"Measure same images both sides: Δms + ΔmAP."},
+{q:"What is the hidden H3 bet?",o:["More badges = more stars","Dropping the P3 medium scale may dip AP-medium","INT8 is always free","COCO has no giraffes"],a:1,e:"Single mAP hides where gains come from. Per-area AP + CIs reveal it."},
+{q:"What is YOLO-27 status in this repo?",o:["Measured at 61.2 mAP locally","UNAVAILABLE: announced, weights not public; harness blocks honestly","Deprecated","Only for phones"],a:1,e:"Any measured YOLO-27 mAP today is unverifiable. We write UNAVAILABLE proof and rerun on release day."}];
+let score=0,answered=new Set();
+const box=document.getElementById('qs'),bar=document.getElementById('bar'),sc=document.getElementById('score');
+function render(){
+box.innerHTML='';Q.forEach((item,i)=>{
+const d=document.createElement('div');d.className='q';d.id='q'+i;
+d.innerHTML='<b>'+(i+1)+'. '+item.q+'</b>';
+item.o.forEach((opt,j)=>{const b=document.createElement('button');b.textContent=opt;
+b.onclick=()=>{if(d.classList.contains('done'))return;d.classList.add('done');
+const ok=j===item.a;if(ok){b.classList.add('correct');if(!answered.has(i)){score++;answered.add(i)}}else{b.classList.add('wrong');d.querySelectorAll('button')[item.a].classList.add('correct');answered.add(i)}
+d.querySelector('.exp').textContent=(ok?'✅ Correct. ':'❌ Not quite. ')+item.e;
+bar.style.width=(answered.size/Q.length*100)+'%';
+sc.textContent='Score: '+score+' / '+Q.length+' · Answered: '+answered.size+(answered.size===Q.length?(score>=8?' — PRO 🏆':' — review the guide 🌱 and retry'):'');};
+d.appendChild(b)});
+const e=document.createElement('div');e.className='exp';d.appendChild(e);box.appendChild(d)})}
+document.getElementById('reset').onclick=()=>{score=0;answered=new Set();bar.style.width='0';sc.textContent='Score: 0 / 10 · Answered: 0';render()};
+render();
+</script>
+</body>
+</html>
